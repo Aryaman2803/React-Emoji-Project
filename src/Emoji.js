@@ -1,26 +1,20 @@
 import React from "react";
 export const Emoji = ({ list }) => {
-  console.log("hello from EMOJI COMPONENT", list);
-
   return (
     <>
       {list ? (
-        <div className="emoji-container">
-          <ul>
-            {list.map((emoji) => {
-              return (
-                <section className="emoji">
-                  <div className="emoji-details">
-                    <span>{emoji.character}</span>
-                    <span>{emoji.unicodeName}</span>
-                  </div>
-                </section>
-              );
-            })}
-          </ul>
-        </div>
+        <section className="emoji-container">
+          {list.map((emoji, index) => {
+            return (
+              <div className="emoji" key={index}>
+                <span id="character">{emoji.character}</span>
+                <span>{emoji.unicodeName}</span>
+              </div>
+            );
+          })}
+        </section>
       ) : (
-        <h1>Search Again</h1>
+        <h1 id="search-again">No Results... </h1>
       )}
     </>
   );

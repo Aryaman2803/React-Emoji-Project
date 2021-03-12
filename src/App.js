@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import Loading from "./isLoading";
 import { IoSearch } from "react-icons/io5";
 import { Emoji } from "./Emoji";
-import Favourite from "./Favourite";
-// import fetchData from "./fetchData";
 
 const getUrl = (searchParam) => {
   let url = "";
@@ -17,8 +15,7 @@ const getUrl = (searchParam) => {
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(false);
-  const [value, setValue] = useState("");
+  let [value, setValue] = useState("");
   const [list, setList] = useState([]);
 
   const fetchData = async (value) => {
@@ -27,10 +24,15 @@ function App() {
       const url = getUrl(value);
       const response = await fetch(url);
       const data = await response.json();
-      // setList([]);
-      setList(data);
+      if (data.length > 100) {
+        const newList = data.slice(0, 150);
+        console.log(newList);
+        setList(newList);
+      } else {
+        setList(data);
+      }
+      setValue("");
       setIsLoading(false);
-      console.log("Calling from fetchData");
     } catch (error) {
       console.log("the error is: ", error);
     }
@@ -59,8 +61,8 @@ function App() {
     <main>
       <section className="section-search">
         <form onSubmit={handleSubmit}>
-          <div>
-            <IoSearch />
+          <div className="form-container">
+            <IoSearch className="icon" />
             <input
               type="text"
               value={value}
@@ -69,9 +71,7 @@ function App() {
             <button type="submit">Search</button>
           </div>
         </form>
-        <menu className="favourite">
-          <Favourite />
-        </menu>
+        <menu className="favourite"></menu>
       </section>
       <section className="section-emoji">
         {isLoading ? <Loading /> : <Emoji list={list} />}
